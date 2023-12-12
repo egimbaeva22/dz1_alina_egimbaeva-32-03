@@ -16,21 +16,55 @@ gmailButton.onclick = () => {
 }
 
 // 2
-const parentBlock = document.querySelector('.parent_block')
 const childBlock = document.querySelector('.child_block')
-let position = 0
+
+const moveSpeedChildBlock = 5
+const parentBlockWidth = 449
+let positionX = 0
+let positionY = 0
 
 const moveBlock =() => {
-    setTimeout(() =>{
-        position += 1
-        childBlock.style.left = `${position}px`
-        if (position < 449) {
-            moveBlock()
-        }
-    },10)
+        if (positionX < parentBlockWidth && positionY === 0) {
+            positionX++
+            childBlock.style.left = `${positionX}px`
+            setTimeout(moveBlock,moveSpeedChildBlock)
+        }else if (positionX >= parentBlockWidth && positionY < parentBlockWidth) {
+            positionY++
+            childBlock.style.top = `${positionY}px`
+            setTimeout(moveBlock, moveSpeedChildBlock)
+        }else if (positionY >= parentBlockWidth && positionX > 0) {
+                positionX--
+                childBlock.style.left = `${positionX}px`
+                setTimeout(moveBlock, moveSpeedChildBlock)
+        } else if (positionX >= 0 && positionY > 0) {
+                positionY--
+                childBlock.style.top = `${positionY}px`
+                setTimeout(moveBlock, moveSpeedChildBlock)
+            }
 }
 moveBlock()
 
+//h/w 2
+//2
+const intervalCount = document.querySelector('.interval')
+const startButton = document.querySelector('#start')
+const stopButton = document.querySelector('#stop')
+const resetButton = document.querySelector('#reset')
+let num = 0
+let interval
 
-
-
+startButton.onclick = () => {
+    clearInterval(interval)
+    interval = setInterval(() => {
+        num++
+        intervalCount.innerText = num
+    },1000)
+}
+stopButton.onclick= () => {
+    clearInterval(interval)
+}
+resetButton.onclick = () => {
+    clearInterval(interval)
+    num = 0
+    intervalCount.innerText = num
+}
