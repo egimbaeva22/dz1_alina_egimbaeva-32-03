@@ -104,5 +104,44 @@ converter(som, usd, 'som', eur)
 converter(usd, eur, 'usd', som)
 converter(eur, usd, 'eur', som)
 
+//card switcher
 
+const card = document.querySelector('.card'),
+    btnNext = document.querySelector('#btn-next'),
+    btnPrev = document.querySelector('#btn-prev')
 
+let countCard = 1
+
+const cardSwitcher = () => {
+    fetch(`https://jsonplaceholder.typicode.com/todos/${countCard}`)
+        .then(response => response.json())
+        .then(data => {
+            card.innerHTML = `
+                <p>${data.title}</p>
+                <p style="color: ${data.completed ? 'green' : 'red'}">${data.completed}</p>
+                <span>${data.id}</span>
+            `;
+        });
+}
+cardSwitcher()
+btnNext.addEventListener('click', () => {
+    countCard++;
+    if (countCard > 200) {
+        countCard = 1;
+    }
+    cardSwitcher();
+});
+
+btnPrev.addEventListener('click', () => {
+    countCard--;
+    if (countCard < 1) {
+        countCard = 200;
+    }
+    cardSwitcher();
+});
+
+//2
+fetch('https://jsonplaceholder.typicode.com/posts')
+    .then((response) => {
+        console.log(response.json())
+    })
