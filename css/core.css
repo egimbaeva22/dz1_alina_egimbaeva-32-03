@@ -77,7 +77,7 @@ h4 {
 }
 
 strong {
-    color: #F79300;
+    color: #a073d9;
 }
 
 label {
@@ -120,6 +120,6 @@ input {
 }
 
 :root {
-    --orange: orange;
+    --orange: #147c8f;
     --black: black;
 }

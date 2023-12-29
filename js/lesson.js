@@ -68,15 +68,11 @@ const usd = document.querySelector('#usd')
 const som = document.querySelector('#som')
 const eur = document.querySelector('#eur')
 //dry
-const converter  = (element, targetElement, current, targetElement2) => {
-    element.oninput = () => {
-        const xhr = new XMLHttpRequest()
-        xhr.open('GET', '../data/converter.json')
-        xhr.setRequestHeader('Content-type', 'application/json')
-        xhr.send()
-
-        xhr.onload = () => {
-            const data = JSON.parse(xhr.response)
+const converter = (element, targetElement, current, targetElement2) => {
+    element.oninput = async () => {
+        try {
+            const response = await fetch("../data/converter.json")
+            const data = await response.json()
 
             switch (current) {
                 case "som":
@@ -96,6 +92,9 @@ const converter  = (element, targetElement, current, targetElement2) => {
             }
 
             element.value === '' && (targetElement.value = '')
+
+        } catch (e) {
+            console.log(e)
         }
     }
 }
@@ -112,16 +111,18 @@ const card = document.querySelector('.card'),
 
 let countCard = 1
 
-const cardSwitcher = () => {
-    fetch(`https://jsonplaceholder.typicode.com/todos/${countCard}`)
-        .then(response => response.json())
-        .then(data => {
-            card.innerHTML = `
+const cardSwitcher = async () => {
+    try {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${countCard}`)
+        const data = await response.json()
+        card.innerHTML = `
                 <p>${data.title}</p>
                 <p style="color: ${data.completed ? 'green' : 'red'}">${data.completed}</p>
                 <span>${data.id}</span>
             `;
-        });
+    } catch (e) {
+
+    }
 }
 cardSwitcher()
 btnNext.addEventListener('click', () => {
@@ -141,7 +142,37 @@ btnPrev.addEventListener('click', () => {
 });
 
 //2
-fetch('https://jsonplaceholder.typicode.com/posts')
-    .then((response) => {
-        console.log(response.json())
+const variable = async () => {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts')
+        const data = await response.json()
+        console.log(data)
+    } catch (e) {
+
+    }
+}
+variable()
+//weather
+
+const cityNameInput = document.querySelector('.cityName')
+const city = document.querySelector('.city')
+const temp = document.querySelector('.temp')
+
+const BASE_URL = 'http://api.openweathermap.org'
+const API_KEY = 'e417df62e04d3b1b111abeab19cea714'
+
+const citySearch = () => {
+    cityNameInput.addEventListener('input', async (event) => {
+        try {
+            const response = await fetch(`${BASE_URL}/data/2.5/weather?q=${cityNameInput.value}&appid=${API_KEY}`)
+            const data = await response.json()
+            city.innerHTML = data.name ? data.name : 'Город не найден...'
+            temp.innerHTML = data?.main?.temp ? Math.round(data?.main?.temp - 273.15) + '&deg;C' : '...'
+
+        } catch (e) {
+
+        }
     })
+}
+citySearch()
+

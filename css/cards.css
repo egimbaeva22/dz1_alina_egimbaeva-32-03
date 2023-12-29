@@ -1,4 +1,28 @@
 .cards {
-    height: 100vh;
+    padding-top: 100px;
+    min-height: 100vh;
     background-color: black;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.card {
+    width: 400px;
+    border: 1px solid white;
+    background-color: white;
+    border-radius: 50px;
+}
+
+.card img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.card p {
+    color: black;
+    text-align: center;
 }
